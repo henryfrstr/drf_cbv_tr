@@ -9,7 +9,9 @@ from .views import (home,
                     TodoList,
                     TodoDetail,
                     TodoListCreate,
-                    TodoRetrieveUpdateDelete
+                    TodoRetrieveUpdateDelete,
+                    TodoConcListCreate,
+                    TodoConcRetreiveUpdateDelete
                     )
 
 
@@ -22,8 +24,10 @@ urlpatterns = [
     # path('todoListDelete/<int:pk>/', todoListDelete),
     # path('toDo_detail/<int:pk>/', toDo_detail),
     # path('todo-list/', TodoList.as_view()),
-    path('todo-list/', TodoListCreate.as_view()),
+    # path('todo-list/', TodoListCreate.as_view()),
+    path('todo-list/', TodoConcListCreate.as_view()),
     # path('todo-detail/<int:pk>', TodoDetail.as_view()),
-    path('todo-detail/<int:pk>', TodoRetrieveUpdateDelete.as_view()),
+    # path('todo-detail/<int:pk>', TodoRetrieveUpdateDelete.as_view()),
+    path('todo-detail/<int:pk>', TodoConcRetreiveUpdateDelete.as_view()),
 
 ]
