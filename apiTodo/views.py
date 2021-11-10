@@ -3,16 +3,18 @@ from django.db.models import query
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from rest_framework import serializers
+from rest_framework import viewsets
 from .serializers import TodoSerializer
 from .models import Todo
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 
 from rest_framework import status
 
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView, mixins, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 # Create your views here.
 
@@ -128,8 +130,12 @@ class TodoDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             print(serializer.data)
-            serializer._data["success"] = "Todo succesfully updated.."
-            return Response(serializer.data)
+            new_serializer_data = list(serializer.data)
+            new_serializer_data.append(
+                {'success': 'Todo succesfully updated..'})
+            return Response(new_serializer_data)
+            # serializer._data["success"] = "Todo succesfully updated.."
+            # return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
@@ -176,3 +182,24 @@ class TodoConcListCreate(ListCreateAPIView):
 class TodoConcRetreiveUpdateDelete(RetrieveUpdateDestroyAPIView):
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
+
+
+################# Viewsets ###########################
+
+class TodoVSListRetreive(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+    queryset = Todo.objects.all()
+    serializer_class = TodoSerializer
+
+
+# mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMxin, GenericViewSet
+class TodoMVS(ModelViewSet):
+    queryset = Todo.objects.all()
+    serializer_class = TodoSerializer
+
+    @action(detail=False, methods=['get'])
+    def todo_count(self, request):
+        todo_count = Todo.objects.filter(done=False).count()
+        count = {
+            'undo-todos': todo_count
+        }
+        return Response(count)

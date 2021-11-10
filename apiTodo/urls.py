@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import (home,
                     todoList,
                     todoListCreate,
@@ -11,9 +11,15 @@ from .views import (home,
                     TodoListCreate,
                     TodoRetrieveUpdateDelete,
                     TodoConcListCreate,
-                    TodoConcRetreiveUpdateDelete
+                    TodoConcRetreiveUpdateDelete,
+                    TodoVSListRetreive,
+                    TodoMVS
                     )
+from rest_framework import routers
 
+router = routers.DefaultRouter()
+router.register('todovs-list', TodoVSListRetreive)
+router.register('todomvs-list', TodoMVS)
 
 urlpatterns = [
     path('', home),
@@ -24,10 +30,11 @@ urlpatterns = [
     # path('todoListDelete/<int:pk>/', todoListDelete),
     # path('toDo_detail/<int:pk>/', toDo_detail),
     # path('todo-list/', TodoList.as_view()),
-    # path('todo-list/', TodoListCreate.as_view()),
-    path('todo-list/', TodoConcListCreate.as_view()),
+    path('todo-list/', TodoListCreate.as_view()),
+    # path('todo-list/', TodoConcListCreate.as_view()),
     # path('todo-detail/<int:pk>', TodoDetail.as_view()),
     # path('todo-detail/<int:pk>', TodoRetrieveUpdateDelete.as_view()),
     path('todo-detail/<int:pk>', TodoConcRetreiveUpdateDelete.as_view()),
+    path('', include(router.urls))
 
 ]
