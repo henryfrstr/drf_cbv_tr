@@ -8,7 +8,8 @@ from .views import (home,
                     toDo_detail,
                     TodoList,
                     TodoDetail,
-                    TodoListCreate
+                    TodoListCreate,
+                    TodoRetrieveUpdateDelete
                     )
 
 
@@ -22,6 +23,7 @@ urlpatterns = [
     # path('toDo_detail/<int:pk>/', toDo_detail),
     # path('todo-list/', TodoList.as_view()),
     path('todo-list/', TodoListCreate.as_view()),
-    path('todo-detail/<int:pk>', TodoDetail.as_view()),
+    # path('todo-detail/<int:pk>', TodoDetail.as_view()),
+    path('todo-detail/<int:pk>', TodoRetrieveUpdateDelete.as_view()),
 
 ]
